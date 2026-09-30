@@ -4,12 +4,18 @@ import {
   articleSchema,
   authorSchema,
   categorySchema,
+  flashSchema,
   viewSchema,
 } from "@/lib/schema";
 
 const articleCollection = defineCollection({
   loader: glob({ pattern: "**/*.mdx", base: "./src/content/articles" }),
   schema: ({ image }) => articleSchema(image),
+});
+
+const flashCollection = defineCollection({
+  loader: glob({ pattern: "**/*.mdx", base: "./src/content/flash" }),
+  schema: flashSchema,
 });
 
 const viewCollection = defineCollection({
@@ -29,6 +35,7 @@ const authorCollection = defineCollection({
 
 export const collections = {
   articles: articleCollection,
+  flash: flashCollection,
   views: viewCollection,
   categories: categoryCollection,
   authors: authorCollection,

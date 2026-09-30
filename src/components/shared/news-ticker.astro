@@ -1,0 +1,102 @@
+---
+import { flashHandler } from "@/lib/handlers/flash";
+import { getDateDistance, normalizeDate } from "@/lib/utils/date";
+
+const items = flashHandler.latest(10);
+---
+
+{
+  items.length > 0 && (
+    <section
+      id="news-ticker"
+      class="bg-base-content text-base-100 relative w-full h-8 overflow-hidden"
+      data-pagefind-ignore="all"
+    >
+      <div class="absolute z-10 bg-info h-full top-0 left-0 flex items-center px-2">
+        <h2 class="text-sm font-sans font-semibold">
+          <a href="/flash" class="hover:underline">快讯</a>
+        </h2>
+      </div>
+      <div
+        class="group h-full flex items-center overflow-hidden pl-14 lg:pl-20 pr-9"
+      >
+        <div class="flex w-max animate-ticker group-hover:[animation-play-state:paused]">
+          {[0, 1].map((copy) => (
+            <ul
+              class="flex items-center shrink-0"
+              aria-hidden={copy === 1 ? "true" : undefined}
+            >
+              {items.map((item) => (
+                <li class="flex items-center gap-2 px-6 text-sm whitespace-nowrap">
+                  <span class="w-1.5 h-1.5 rounded-full bg-error inline-block shrink-0" />
+                  <a
+                    href={item.data.url ?? "/flash"}
+                    target={item.data.url ? "_blank" : "_self"}
+                    rel={item.data.url ? "noopener" : undefined}
+                    class="hover:underline underline-offset-2"
+                  >
+                    {item.data.title}
+                  </a>
+                  <span class="text-base-100/60 text-xs">
+                    {getDateDistance(normalizeDate(item.data.publishedTime))}
+                  </span>
+                </li>
+          ))}
+        </ul>
+      ))}
+        </div>
+      </div>
+      <button
+        id="news-ticker-close"
+        type="button"
+        class="absolute z-10 top-0 right-0 h-full w-9 flex items-center justify-center bg-base-content text-base-100 hover:bg-error hover:text-error-content transition-colors border-l border-base-100/20"
+        aria-label="关闭快讯条"
+        title="关闭快讯条"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="12"
+          height="12"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+          stroke-linecap="round"
+        >
+          <path d="M18 6 6 18"></path>
+          <path d="m6 6 12 12"></path>
+        </svg>
+      </button>
+    </section>
+  )
+}
+
+<script is:inline>
+  (function () {
+    var KEY = "news-ticker-dismissed";
+
+    function applyDismissed() {
+      var bar = document.getElementById("news-ticker");
+      if (!bar) return;
+      if (sessionStorage.getItem(KEY) === "1") {
+        bar.setAttribute("hidden", "");
+      } else {
+        bar.removeAttribute("hidden");
+      }
+    }
+
+    // 事件委托绑定在 document 上，Astro 无刷新换页后依然有效
+    document.addEventListener("click", function (event) {
+      var target = event.target instanceof Element
+        ? event.target.closest("#news-ticker-close")
+        : null;
+      if (!target) return;
+      sessionStorage.setItem(KEY, "1");
+      var bar = document.getElementById("news-ticker");
+      if (bar) bar.setAttribute("hidden", "");
+    });
+
+    document.addEventListener("astro:page-load", applyDismissed);
+    applyDismissed();
+  })();
+</script>

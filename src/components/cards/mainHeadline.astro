@@ -42,6 +42,16 @@ const category = categoriesHandler.oneCategory(article.data.category.id);
         {article.data.description}
       </p>
     </div>
+    {
+      article.data.editorNote && (
+        <blockquote class="border-l-2 border-primary/60 dark:border-secondary/60 pl-3 text-sm text-base-content/70 italic">
+          <span class="not-italic font-semibold text-primary dark:text-secondary">
+            编辑短评：
+          </span>
+          {article.data.editorNote}
+        </blockquote>
+      )
+    }
     <div class="flex items-center text-xs text-base-content/80 mt-2">
       <span class="text-primary dark:text-secondary">{category.data.title}</span
       >

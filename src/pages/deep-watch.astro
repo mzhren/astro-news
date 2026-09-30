@@ -1,0 +1,73 @@
+---
+import ListLayout from "@/layouts/list.astro";
+import { getEntry, render } from "astro:content";
+import { articlesHandler } from "@/lib/handlers/articles";
+import { categoriesHandler } from "@/lib/handlers/categories";
+import { getDateDistance, normalizeDate } from "@/lib/utils/date";
+import { Image } from "astro:assets";
+import Divider from "@/components/bases/divider.astro";
+
+const entry = await getEntry("views", "deep-watch");
+
+if (!entry) {
+  return Astro.redirect("/404");
+}
+
+const articles = await Promise.all(
+  articlesHandler.deepWatch(12).map(async (article) => ({
+    article,
+    category: categoriesHandler.oneCategory(article.data.category.id),
+    frontmatter: (await render(article)).remarkPluginFrontmatter,
+  }))
+);
+---
+
+<ListLayout header="深度观察" entry={entry}>
+  <div class="flex flex-col gap-10 my-6">
+    {
+      articles.map(({ article, category, frontmatter }) => (
+        <article class="group relative isolate grid grid-cols-1 lg:grid-cols-3 gap-6 border-b border-base-300 pb-10 last:border-b-0">
+          <div class="lg:col-span-1 aspect-video overflow-hidden rounded-md">
+            <Image
+              src={article.data.cover}
+              alt={article.data.covert_alt ?? article.data.title}
+              layout="constrained"
+              loading="lazy"
+              class="w-full h-full object-cover"
+            />
+          </div>
+          <div class="lg:col-span-2 flex flex-col gap-3">
+            <div class="flex items-center gap-2 text-xs">
+              <span class="badge badge-outline badge-sm text-primary dark:text-secondary border-primary/40 dark:border-secondary/40">
+                {category.data.title}
+              </span>
+              <time
+                datetime={normalizeDate(article.data.publishedTime)}
+                class="text-base-content/60"
+              >
+                {getDateDistance(normalizeDate(article.data.publishedTime))}
+              </time>
+              <Divider />
+              <span class="text-base-content/60">
+                {frontmatter.minutesRead}
+              </span>
+            </div>
+            <h2 class="text-2xl font-serif font-semibold leading-snug lg:group-hover:underline underline-offset-2">
+              <a href={`/articles/${article.id}`}>
+                <span class="absolute inset-0 z-10 pointer-events-none"></span>
+                {article.data.title}
+              </a>
+            </h2>
+            <p class="text-base-content/90 text-pretty">{article.data.description}</p>
+            {article.data.editorNote && (
+              <blockquote class="border-l-2 border-primary/60 dark:border-secondary/60 bg-primary/5 dark:bg-secondary/5 rounded-r-md px-4 py-2 text-sm text-base-content/80">
+                <span class="font-semibold text-primary dark:text-secondary">观点：</span>
+                {article.data.editorNote}
+              </blockquote>
+            )}
+          </div>
+        </article>
+      ))
+    }
+  </div>
+</ListLayout>

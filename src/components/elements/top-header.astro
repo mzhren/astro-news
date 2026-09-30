@@ -13,8 +13,12 @@ import ThemeController from "../bases/theme-controller.astro";
     <MenuDropdown />
     <a class="text-xl px-2 text-nowrap lg:hidden" href="/">{SITE.title}</a>
   </div>
-  <div class="navbar-center hidden lg:flex">
-    <a class="text-xl px-2" href="/">{SITE.title}</a>
+  <div class="navbar-center hidden lg:flex items-center">
+    <a class="text-xl px-2 text-nowrap" href="/">{SITE.title}</a>
+    <span
+      class="hidden xl:inline text-xs text-base-content/60 border-l border-base-300 pl-3 ml-1 whitespace-nowrap"
+      >{SITE.tagline}</span
+    >
   </div>
   <div class="navbar-end">
     <ThemeController />

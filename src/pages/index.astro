@@ -2,7 +2,12 @@
 import BaseLayout from "@/layouts/base.astro";
 import { getEntry } from "astro:content";
 import Headlines from "@/pages/_home/headlines.astro";
-import LatestNews from "@/pages/_home/latestNews.astro";
+import DeepWatch from "@/pages/_home/deep-watch.astro";
+import FlashStream from "@/pages/_home/flash-stream.astro";
+import CategorySpotlight from "@/pages/_home/categorySpotlight.astro";
+import ToolPicks from "@/pages/_home/tool-picks.astro";
+import RankingEntry from "@/pages/_home/ranking-entry.astro";
+import NewsletterBand from "@/pages/_home/newsletter-band.astro";
 import Authors from "@/pages/_home/authors.astro";
 
 const entry = await getEntry("views", "home");
@@ -14,6 +19,26 @@ if (!entry) {
 
 <BaseLayout entry={entry}>
   <Headlines />
-  <LatestNews />
+  <section class="container pt-12 grid grid-cols-1 lg:grid-cols-5 gap-8" data-pagefind-ignore="all">
+    <div class="lg:col-span-3">
+      <DeepWatch />
+    </div>
+    <div class="lg:col-span-2">
+      <FlashStream />
+    </div>
+  </section>
+  <CategorySpotlight
+    categoryId="tech-frontier"
+    title="技术前沿"
+    subtitle="论文 / 开源 / 模型"
+  />
+  <CategorySpotlight
+    categoryId="industry"
+    title="产业动态"
+    subtitle="融资 / 产品 / 公司"
+  />
+  <ToolPicks />
+  <RankingEntry />
+  <NewsletterBand />
   <Authors />
 </BaseLayout>

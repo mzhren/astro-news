@@ -19,14 +19,17 @@ export const getStaticPaths = (async ({ paginate }) => {
     );
     return paginate(filteredArticles, {
       params: { category: category.id },
-      props: { postsLength: filteredArticles.length },
+      props: {
+        postsLength: filteredArticles.length,
+        categoryTitle: category.data.title,
+      },
       pageSize: SITE.postsPerPage,
     });
   });
 }) satisfies GetStaticPaths;
 
 const { page } = Astro.props;
-const { postsLength } = Astro.props;
+const { postsLength, categoryTitle } = Astro.props;
 const params = Astro.params;
 const articles = page.data;
 const pathname = new URL(Astro.request.url).pathname.split("/");
@@ -39,7 +42,7 @@ if (!entry) {
 }
 ---
 
-<ListLayout header={params.category} entry={entry}>
+<ListLayout header={categoryTitle} entry={entry}>
   <ul class="flex flex-col gap-2 flex-1">
     {
       articles.map((article) => (

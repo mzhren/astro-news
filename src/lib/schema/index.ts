@@ -6,6 +6,8 @@ export const articleSchema = (image: ImageFunction) =>
     isDraft: z.boolean().default(false),
     isMainHeadline: z.boolean().default(false),
     isSubHeadline: z.boolean().default(false),
+    isDeepWatch: z.boolean().default(false),
+    editorNote: z.string().max(200, "Too long, max 200 characters").optional(),
     cover: image(),
     covert_alt: z.string().optional(),
     title: z.string().max(60, "Too long, max 60 characters"),
@@ -14,6 +16,13 @@ export const articleSchema = (image: ImageFunction) =>
     authors: z.array(reference("authors")).min(1),
     publishedTime: z.string().datetime().or(z.date()),
   });
+
+export const flashSchema = z.object({
+  title: z.string().max(120, "Too long, max 120 characters"),
+  publishedTime: z.string().datetime().or(z.date()),
+  source: z.string().optional(),
+  url: z.string().url().optional(),
+});
 
 export const viewSchema = z.object({
   title: z.string(),

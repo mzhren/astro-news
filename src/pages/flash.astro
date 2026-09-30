@@ -1,0 +1,83 @@
+---
+import ListLayout from "@/layouts/list.astro";
+import { getEntry } from "astro:content";
+import { flashHandler } from "@/lib/handlers/flash";
+import { getDateDistance, normalizeDate } from "@/lib/utils/date";
+
+const entry = await getEntry("views", "flash");
+
+if (!entry) {
+  return Astro.redirect("/404");
+}
+
+const items = flashHandler.allFlash();
+
+// 统一按北京时间展示与分组
+const tz = "Asia/Shanghai";
+const shanghaiDate = (iso: string) =>
+  new Date(iso).toLocaleDateString("zh-CN", { timeZone: tz });
+const shanghaiTime = (iso: string) =>
+  new Date(iso).toLocaleTimeString("zh-CN", {
+    timeZone: tz,
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  });
+
+const groups = new Map<string, typeof items>();
+for (const item of items) {
+  const day = shanghaiDate(normalizeDate(item.data.publishedTime));
+  if (!groups.has(day)) groups.set(day, []);
+  groups.get(day)!.push(item);
+}
+---
+
+<ListLayout header="快讯流" entry={entry}>
+  <p class="text-sm text-base-content/60 -mt-2 mb-6">
+    共 {items.length} 条 · 实时滚动更新，首页顶部快讯条同步展示最新动态
+  </p>
+  <div class="flex flex-col gap-8 my-6">
+    {
+      [...groups.entries()].map(([day, dayItems]) => (
+        <section class="flex flex-col gap-2">
+          <h2 class="text-lg font-bold sticky top-0 bg-base-100 py-1 z-10 border-b border-base-300">
+            {day}
+          </h2>
+          <ol class="flex flex-col">
+            {dayItems.map((item) => (
+              <li class="group relative flex gap-4 py-3 border-b border-base-300/60">
+                <time
+                  datetime={normalizeDate(item.data.publishedTime)}
+                  class="shrink-0 w-14 text-sm text-base-content/60 font-mono pt-0.5"
+                >
+                  {shanghaiTime(normalizeDate(item.data.publishedTime))}
+                </time>
+                <span class="mt-2 w-1.5 h-1.5 rounded-full bg-error shrink-0" />
+                <div class="flex flex-col gap-0.5 min-w-0">
+                  <span class="leading-snug lg:group-hover:underline underline-offset-2">
+                    {item.data.url ? (
+                      <a
+                        href={item.data.url}
+                        target="_blank"
+                        rel="noopener"
+                        class="after:content-['↗'] after:text-xs after:text-base-content/40 after:ml-1"
+                      >
+                        {item.data.title}
+                      </a>
+                    ) : (
+                      item.data.title
+                    )}
+                  </span>
+                  <span class="text-xs text-base-content/60 flex gap-2">
+                    <span>{getDateDistance(normalizeDate(item.data.publishedTime))}</span>
+                    {item.data.source && <span>· 来源：{item.data.source}</span>}
+                  </span>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </section>
+      ))
+    }
+  </div>
+</ListLayout>

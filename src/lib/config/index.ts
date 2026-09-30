@@ -1,42 +1,54 @@
 import type { Link } from "../types";
 
 export const SITE = {
-  title: "Astro News",
-  description: "A news website built with Astro",
+  title: "AI 深度观察",
+  // 副标题：洞察AI未来，解码智能世界
+  tagline: "洞察AI未来，解码智能世界",
+  description:
+    "AI 深度观察（aideepseen.com）聚焦人工智能领域的前沿技术、行业动态与应用实践，通过专业分析与深度解读，为从业者、研究者和爱好者提供多维度的洞察视角。我们致力于挖掘AI技术的底层逻辑，探讨其对商业、社会和人类未来的深远影响，助您站在智能革命的最前沿。",
   author: "Mohammad Rahmani",
-  url: "https://astro-news-six.vercel.app",
+  url: "https://aideepseen.com",
   github: "https://github.com/Mrahmani71/astro-news",
-  locale: "en-US",
+  locale: "zh-CN",
   dir: "ltr",
   charset: "UTF-8",
   basePath: "/",
   postsPerPage: 4,
 };
 
+// 主导航：8 大栏目
 export const NAVIGATION_LINKS: Link[] = [
   {
-    href: "/categories/technology",
-    text: "Technology",
+    href: "/must-read",
+    text: "今日必读",
   },
   {
-    href: "/categories/programming",
-    text: "Programming",
+    href: "/deep-watch",
+    text: "深度观察",
   },
   {
-    href: "/categories/lifestyle",
-    text: "Lifestyle",
+    href: "/flash",
+    text: "快讯",
   },
   {
-    href: "/categories/productivity",
-    text: "Productivity",
+    href: "/categories/tech-frontier",
+    text: "技术前沿",
   },
   {
-    href: "/categories/health",
-    text: "Health",
+    href: "/categories/industry",
+    text: "产业动态",
   },
   {
-    href: "/categories/finance",
-    text: "Finance",
+    href: "/categories/tools",
+    text: "工具推荐",
+  },
+  {
+    href: "/rankings",
+    text: "榜单",
+  },
+  {
+    href: "/newsletter",
+    text: "Newsletter",
   },
 ];
 
@@ -66,11 +78,11 @@ export const OTHER_LINKS: Link[] = [
     text: "Cookie Policy",
   },
   {
-    href: "https://astro-news-six.vercel.app/rss.xml",
+    href: `${SITE.url}/rss.xml`,
     text: "RSS",
   },
   {
-    href: "https://astro-news-six.vercel.app/sitemap-index.xml",
+    href: `${SITE.url}/sitemap-index.xml`,
     text: "Sitemap",
   },
 ];

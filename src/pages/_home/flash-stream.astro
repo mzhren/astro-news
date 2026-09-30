@@ -1,0 +1,65 @@
+---
+import { flashHandler } from "@/lib/handlers/flash";
+import { getDateDistance, normalizeDate } from "@/lib/utils/date";
+
+const items = flashHandler.latest(10);
+const loop = [...items, ...items];
+---
+
+<section
+  class="flex flex-col rounded-lg border border-base-300 overflow-hidden h-[26rem]"
+  data-pagefind-ignore="all"
+>
+  <div class="flex items-center gap-2 px-4 py-3 border-b border-base-300 bg-base-200/40">
+    <h2 class="text-xl font-bold">快讯流</h2>
+    <span class="relative flex h-2 w-2">
+      <span
+        class="animate-ping absolute inline-flex h-full w-full rounded-full bg-error opacity-75"
+      ></span>
+      <span
+        class="relative inline-flex rounded-full h-2 w-2 bg-error"
+      ></span>
+    </span>
+    <span class="text-xs text-base-content/60">实时更新</span>
+    <a
+      href="/flash"
+      class="ml-auto text-sm text-base-content/80 hover:text-primary transition-all"
+      >查看全部</a
+    >
+  </div>
+  <div class="group relative flex-1 overflow-hidden">
+    <ul
+      class="animate-flash-stream group-hover:[animation-play-state:paused]"
+    >
+      {
+        loop.map((item, index) => (
+          <li
+            class="flex items-start gap-2.5 px-4 py-3 border-b border-base-300/60"
+            aria-hidden={index >= items.length ? "true" : undefined}
+          >
+            <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-error shrink-0" />
+            <div class="flex flex-col gap-0.5 min-w-0">
+              <a
+                href={item.data.url ?? "/flash"}
+                target={item.data.url ? "_blank" : "_self"}
+                rel={item.data.url ? "noopener" : undefined}
+                class="text-sm leading-snug hover:underline underline-offset-2 line-clamp-2"
+              >
+                {item.data.title}
+              </a>
+              <span class="text-xs text-base-content/60 flex gap-2">
+                <time datetime={normalizeDate(item.data.publishedTime)}>
+                  {getDateDistance(normalizeDate(item.data.publishedTime))}
+                </time>
+                {item.data.source && <span>· {item.data.source}</span>}
+              </span>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+    <div
+      class="pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-base-100 to-transparent"
+    />
+  </div>
+</section>

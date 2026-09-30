@@ -8,7 +8,7 @@ import { NAVIGATION_LINKS, OTHER_LINKS } from "@/lib/config";
     tabindex="0"
     role="button"
     class="btn btn-ghost btn-circle"
-    aria-label="Menu"
+    aria-label="菜单"
   >
     <Menu />
   </button>
@@ -17,12 +17,12 @@ import { NAVIGATION_LINKS, OTHER_LINKS } from "@/lib/config";
     tabindex="0"
     class="menu dropdown-content z-50 bg-base-100 rounded-box w-56 shadow"
   >
-    <li><a href="/" aria-label="Homepage">Home</a></li>
-    <li><a href="/articles" aria-label="Articles Page">Articles</a></li>
+    <li><a href="/" aria-label="首页">首页</a></li>
+    <li><a href="/articles" aria-label="全部文章">全部文章</a></li>
 
     <li>
       <details>
-        <summary>Categories</summary>
+        <summary>栏目</summary>
         <ul>
           {
             NAVIGATION_LINKS.map(({ href, text, target }) => (
@@ -39,7 +39,7 @@ import { NAVIGATION_LINKS, OTHER_LINKS } from "@/lib/config";
 
     <li>
       <details>
-        <summary>Other Pages</summary>
+        <summary>其他页面</summary>
         <ul>
           {
             OTHER_LINKS.map(({ href, text, target }) => (

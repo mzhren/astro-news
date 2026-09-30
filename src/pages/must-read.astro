@@ -1,0 +1,104 @@
+---
+import ListLayout from "@/layouts/list.astro";
+import { getEntry } from "astro:content";
+import { articlesHandler } from "@/lib/handlers/articles";
+import { categoriesHandler } from "@/lib/handlers/categories";
+import { render } from "astro:content";
+import { getDateDistance, normalizeDate } from "@/lib/utils/date";
+import { Image } from "astro:assets";
+import Divider from "@/components/bases/divider.astro";
+
+const entry = await getEntry("views", "must-read");
+
+if (!entry) {
+  return Astro.redirect("/404");
+}
+
+const picks = articlesHandler.mustRead();
+const [featured, ...rest] = picks;
+const featuredCategory = categoriesHandler.oneCategory(featured.data.category.id);
+const { remarkPluginFrontmatter } = await render(featured);
+---
+
+<ListLayout header="今日必读" entry={entry}>
+  <div class="flex flex-col gap-8 my-6">
+    <article class="group relative isolate flex flex-col lg:flex-row gap-6">
+      <div class="w-full lg:w-[46%] aspect-video overflow-hidden rounded-md shrink-0">
+        <Image
+          src={featured.data.cover}
+          alt={featured.data.covert_alt ?? featured.data.title}
+          layout="constrained"
+          loading="eager"
+          class="w-full h-full object-cover"
+        />
+      </div>
+      <div class="flex flex-col gap-3">
+        <span class="badge badge-primary badge-sm w-fit text-primary-content">主推</span>
+        <h2 class="text-2xl font-serif font-semibold leading-snug lg:group-hover:underline underline-offset-2">
+          <a href={`/articles/${featured.id}`}>
+            <span class="absolute inset-0 z-10 pointer-events-none"></span>
+            {featured.data.title}
+          </a>
+        </h2>
+        <p class="text-base-content/90 text-pretty">{featured.data.description}</p>
+        {
+          featured.data.editorNote && (
+            <blockquote class="border-l-2 border-primary/60 dark:border-secondary/60 pl-3 text-sm text-base-content/70 italic">
+              <span class="not-italic font-semibold text-primary dark:text-secondary">
+                编辑短评：
+              </span>
+              {featured.data.editorNote}
+            </blockquote>
+          )
+        }
+        <div class="flex items-center text-xs text-base-content/80 mt-auto">
+          <span class="text-primary dark:text-secondary">{featuredCategory.data.title}</span>
+          <Divider />
+          <time datetime={normalizeDate(featured.data.publishedTime)}>
+            {getDateDistance(normalizeDate(featured.data.publishedTime))}
+          </time>
+          <Divider />
+          <span>{remarkPluginFrontmatter.minutesRead}</span>
+        </div>
+      </div>
+    </article>
+
+    <ol class="flex flex-col divide-y divide-base-300 border-t border-base-300">
+      {
+        rest.map((article) => {
+          const category = categoriesHandler.oneCategory(article.data.category.id);
+          return (
+            <li class="group relative isolate py-4">
+              <div class="flex flex-col gap-1.5">
+                <h3 class="text-lg font-serif font-semibold lg:group-hover:underline underline-offset-2">
+                  <a href={`/articles/${article.id}`}>
+                    <span class="absolute inset-0 z-10 pointer-events-none"></span>
+                    {article.data.title}
+                  </a>
+                </h3>
+                <p class="text-sm text-base-content/80 line-clamp-2 text-pretty">
+                  {article.data.description}
+                </p>
+                {article.data.editorNote && (
+                  <p class="text-sm text-base-content/70 border-l-2 border-primary/60 dark:border-secondary/60 pl-3 italic">
+                    <span class="not-italic font-semibold text-primary dark:text-secondary">
+                      编辑短评：
+                    </span>
+                    {article.data.editorNote}
+                  </p>
+                )}
+                <div class="flex items-center text-xs text-base-content/80 pt-1">
+                  <span class="text-primary dark:text-secondary">{category.data.title}</span>
+                  <Divider />
+                  <time datetime={normalizeDate(article.data.publishedTime)}>
+                    {getDateDistance(normalizeDate(article.data.publishedTime))}
+                  </time>
+                </div>
+              </div>
+            </li>
+          );
+        })
+      }
+    </ol>
+  </div>
+</ListLayout>

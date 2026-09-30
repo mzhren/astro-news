@@ -1,0 +1,125 @@
+---
+import ListLayout from "@/layouts/list.astro";
+import { getEntry } from "astro:content";
+
+const entry = await getEntry("views", "rankings");
+
+if (!entry) {
+  return Astro.redirect("/404");
+}
+
+type Board = {
+  id: string;
+  emoji: string;
+  title: string;
+  description: string;
+  columns: string[];
+  rows: (string | number)[][];
+};
+
+const boards: Board[] = [
+  {
+    id: "models",
+    emoji: "🧠",
+    title: "模型榜",
+    description: "主流大模型综合能力横评（示例数据）",
+    columns: ["排名", "模型", "厂商", "综合分", "环比", "开源"],
+    rows: [
+      [1, "GPT-5.2", "OpenAI", 94.2, "▲ 1.3", "否"],
+      [2, "Claude 4.5 Opus", "Anthropic", 93.5, "▲ 2.1", "否"],
+      [3, "Gemini 3 Ultra", "Google", 92.8, "▲ 0.8", "否"],
+      [4, "DeepSeek-V4", "DeepSeek", 92.1, "▲ 3.4", "是"],
+      [5, "Qwen 4 Max", "阿里", 91.4, "▲ 1.9", "是"],
+      [6, "Kimi K2", "月之暗面", 90.2, "▲ 2.7", "是"],
+      [7, "GLM-5", "智谱", 89.6, "▲ 1.1", "是"],
+      [8, "Llama 4 405B", "Meta", 88.9, "▼ 0.4", "是"],
+    ],
+  },
+  {
+    id: "products",
+    emoji: "🚀",
+    title: "产品榜",
+    description: "AI 应用热度与口碑（示例数据）",
+    columns: ["排名", "产品", "赛道", "月活", "环比", "评分"],
+    rows: [
+      [1, "ChatGPT", "助手", "8.2 亿", "▲ 6%", 4.8],
+      [2, "Gemini", "助手", "6.5 亿", "▲ 11%", 4.7],
+      [3, "Cursor", "编程", "380 万", "▲ 18%", 4.9],
+      [4, "Claude Code", "编程", "260 万", "▲ 22%", 4.8],
+      [5, "Perplexity", "搜索", "1.2 亿", "▲ 9%", 4.6],
+      [6, "Midjourney", "图像", "2100 万", "▲ 4%", 4.5],
+      [7, "NotebookLM", "学习", "1800 万", "▲ 15%", 4.7],
+      [8, "Notion AI", "办公", "1500 万", "▲ 7%", 4.4],
+    ],
+  },
+];
+---
+
+<ListLayout header="榜单" entry={entry}>
+  <nav class="flex gap-2 my-4" aria-label="榜单导航">
+    {
+      boards.map((board) => (
+        <a href={`#${board.id}`} class="btn btn-sm btn-outline">
+          {board.emoji} {board.title}
+        </a>
+      ))
+    }
+  </nav>
+
+  <div class="flex flex-col gap-12 my-6">
+    {
+      boards.map((board) => (
+        <section id={board.id} class="scroll-mt-24 flex flex-col gap-4">
+          <div>
+            <h2 class="text-xl font-bold flex items-center gap-2">
+              <span aria-hidden="true">{board.emoji}</span>
+              {board.title}
+            </h2>
+            <p class="text-sm text-base-content/60">{board.description}</p>
+          </div>
+          <div class="overflow-x-auto rounded-lg border border-base-300">
+            <table class="table">
+              <thead>
+                <tr>
+                  {board.columns.map((column) => (
+                    <th>{column}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {board.rows.map((row) => (
+                  <tr class="hover:bg-base-200/60">
+                    {row.map((cell, i) => (
+                      <td
+                        class:list={[
+                          i === 0 && "font-bold",
+                          i === 1 && "font-semibold",
+                          typeof cell === "string" && cell.startsWith("▲") &&
+                            "text-success",
+                          typeof cell === "string" && cell.startsWith("▼") &&
+                            "text-error",
+                        ]}
+                      >
+                        {i === 0 && typeof cell === "number" && cell < 4 ? (
+                          <span class="inline-flex w-6 h-6 items-center justify-center rounded-full bg-primary/10 text-primary dark:text-secondary">
+                            {cell}
+                          </span>
+                        ) : (
+                          cell
+                        )}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      ))
+    }
+  </div>
+
+  <p class="text-xs text-base-content/50 pb-4">
+    以上为演示数据，正式上线后可由编辑后台维护或接入自动化评测流水线。
+  </p>
+</ListLayout>

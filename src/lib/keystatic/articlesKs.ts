@@ -16,8 +16,16 @@ export const articlesKs = collection({
       defaultValue: false,
     }),
     isSubHeadline: fields.checkbox({
-      label: "Is this a sub headline?",
+      label: "Is this a sub headline? (今日必读)",
       defaultValue: false,
+    }),
+    isDeepWatch: fields.checkbox({
+      label: "Is this a deep watch article? (深度观察)",
+      defaultValue: false,
+    }),
+    editorNote: fields.text({
+      label: "Editor note (编辑短评/观点)",
+      validation: { length: { max: 200 } },
     }),
     description: fields.text({
       label: "Description",

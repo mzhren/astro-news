@@ -1,0 +1,47 @@
+---
+import NewsCard from "@/components/cards/newsCard.astro";
+import { articlesHandler } from "@/lib/handlers/articles";
+import { categoriesHandler } from "@/lib/handlers/categories";
+import ArrowRight02 from "@/assets/svgs/arrow-right-02.astro";
+
+type Props = {
+  categoryId: string;
+  title: string;
+  subtitle?: string;
+  limit?: number;
+};
+
+const { categoryId, title, subtitle, limit = 3 } = Astro.props;
+
+const articles = articlesHandler.byCategory(categoryId).slice(0, limit);
+const category = categoriesHandler.oneCategory(categoryId);
+---
+
+{
+  articles.length > 0 && (
+    <section class="container pt-12 space-y-4" data-pagefind-ignore="all">
+      <div class="flex items-center gap-2">
+        <h2 class="text-xl font-bold">{title}</h2>
+        {subtitle && (
+          <span class="text-sm text-base-content/60 hidden sm:inline">
+            {subtitle}
+          </span>
+        )}
+        <a
+          href={`/categories/${category.id}`}
+          class="ml-auto group flex text-sm items-center gap-1 text-base-content/80 hover:gap-2 transition-all duration-200"
+        >
+          <span class="group-hover:text-primary">查看全部</span>
+          <span class="group-hover:translate-x-0.5 transition-transform group-hover:text-primary">
+            <ArrowRight02 size="16" />
+          </span>
+        </a>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 gap-y-6">
+        {articles.map((article, index) => (
+          <NewsCard article={article} index={index} />
+        ))}
+      </div>
+    </section>
+  )
+}

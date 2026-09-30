@@ -1,0 +1,105 @@
+---
+import ListLayout from "@/layouts/list.astro";
+import { getEntry } from "astro:content";
+
+const entry = await getEntry("views", "newsletter");
+
+if (!entry) {
+  return Astro.redirect("/404");
+}
+
+const plans = [
+  {
+    emoji: "☀️",
+    name: "AI 日报",
+    frequency: "每个工作日 · 早 8 点",
+    description:
+      "5 分钟速览前一日要闻：模型发布、融资动态、政策变化与值得关注的论文。",
+    perks: ["编辑短评划重点", "原文链接一键直达", "工作日更新，周末停发"],
+    highlight: false,
+  },
+  {
+    emoji: "📅",
+    name: "AI 周报",
+    frequency: "每周日 · 早 9 点",
+    description:
+      "深度梳理一周趋势：产业格局变化、深度观察合集与下周值得关注的事件。",
+    perks: ["本周深度观察合集", "榜单变化速览", "编辑团队观点小结"],
+    highlight: true,
+  },
+];
+---
+
+<ListLayout header="Newsletter 订阅" entry={entry}>
+  <div class="flex flex-col gap-8 my-6 pb-4">
+    <p class="text-base-content/80 max-w-2xl">
+      重要动态，定时送达。选择适合你的节奏，随时可以退订。
+    </p>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {
+        plans.map((plan) => (
+          <div
+            class:list={[
+              "card border",
+              plan.highlight
+                ? "border-primary/40 bg-primary/5 dark:bg-secondary/5"
+                : "border-base-300",
+            ]}
+          >
+            <div class="card-body gap-4">
+              <div class="flex items-center gap-3">
+                <span class="text-4xl" aria-hidden="true">
+                  {plan.emoji}
+                </span>
+                <div>
+                  <h2 class="card-title text-lg">
+                    {plan.name}
+                    {plan.highlight && (
+                      <span class="badge badge-primary badge-sm text-primary-content">
+                        推荐
+                      </span>
+                    )}
+                  </h2>
+                  <p class="text-xs text-base-content/60">{plan.frequency}</p>
+                </div>
+              </div>
+              <p class="text-sm text-base-content/80">{plan.description}</p>
+              <ul class="flex flex-col gap-1.5 text-sm">
+                {plan.perks.map((perk) => (
+                  <li class="flex items-center gap-2">
+                    <span class="text-success" aria-hidden="true">✓</span>
+                    {perk}
+                  </li>
+                ))}
+              </ul>
+              <form
+                class="flex flex-col sm:flex-row gap-2 mt-auto"
+                action="/newsletter"
+                method="get"
+                aria-label={`${plan.name}订阅表单`}
+              >
+                <input
+                  type="email"
+                  required
+                  placeholder="you@example.com"
+                  class="input input-bordered w-full"
+                  aria-label="邮箱地址"
+                />
+                <button type="submit" class="btn btn-primary shrink-0">
+                  订阅{plan.name}
+                </button>
+              </form>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+
+    <div class="text-xs text-base-content/60 space-y-1">
+      <p>· 演示表单：正式上线前请接入邮件服务（如 Buttondown / Mailchimp / Resend）。</p>
+      <p>· 我们尊重你的邮箱：不发广告、不共享地址，一键退订。</p>
+      <p>· 也欢迎通过 <a class="link link-primary" href="/rss.xml">RSS</a> 订阅全站更新。</p>
+    </div>
+  </div>
+</ListLayout>

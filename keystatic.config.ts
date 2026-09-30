@@ -1,4 +1,4 @@
-import { articlesKs, authorsKs, categoriesKs } from "@/lib/keystatic";
+import { articlesKs, authorsKs, categoriesKs, flashKs } from "@/lib/keystatic";
 import { config } from "@keystatic/core";
 
 export default config({
@@ -7,12 +7,20 @@ export default config({
   },
   ui: {
     brand: {
-      name: "Astro News",
+      name: "AI 深度观察",
     },
-    navigation: ["---", "articles", "---", "authors", "categories"],
+    navigation: [
+      "---",
+      "articles",
+      "flash",
+      "---",
+      "authors",
+      "categories",
+    ],
   },
   collections: {
     articles: articlesKs,
+    flash: flashKs,
     authors: authorsKs,
     categories: categoriesKs,
   },

@@ -1,0 +1,58 @@
+<section class="container pt-12" data-pagefind-ignore="all">
+  <div
+    class="rounded-lg border border-primary/20 bg-gradient-to-br from-primary/10 via-base-200/40 to-secondary/10 px-6 py-8 md:px-10"
+  >
+    <div class="grid gap-6 lg:grid-cols-2 lg:items-center">
+      <div class="space-y-3">
+        <div class="flex items-center gap-2">
+          <h2 class="text-xl font-bold">Newsletter 订阅</h2>
+          <span class="badge badge-primary badge-sm text-primary-content"
+            >免费</span
+          >
+        </div>
+        <p class="text-sm text-base-content/80 max-w-md">
+          <strong>AI 日报</strong>：每个工作日清晨，5 分钟速览前一日要闻；
+          <strong>AI 周报</strong>：每周日，深度梳理一周趋势与观点。
+        </p>
+        <ul class="flex flex-wrap gap-2 text-xs">
+          <li class="badge badge-outline gap-1">☀️ 每日精选</li>
+          <li class="badge badge-outline gap-1">📅 每周深度</li>
+          <li class="badge badge-outline gap-1">🚫 无广告</li>
+          <li class="badge badge-outline gap-1">📮 随时退订</li>
+        </ul>
+      </div>
+      <form
+        class="flex flex-col gap-2"
+        action="/newsletter"
+        method="get"
+        aria-label="Newsletter 订阅表单"
+      >
+        <div class="flex flex-col sm:flex-row gap-2">
+          <input
+            type="email"
+            required
+            placeholder="you@example.com"
+            class="input input-bordered w-full"
+            aria-label="邮箱地址"
+          />
+          <button type="submit" class="btn btn-primary shrink-0">
+            订阅
+          </button>
+        </div>
+        <div class="flex flex-wrap gap-4 text-sm">
+          <label class="label cursor-pointer gap-2 px-0 py-0">
+            <input type="checkbox" class="checkbox checkbox-sm checkbox-primary" checked />
+            <span>AI 日报</span>
+          </label>
+          <label class="label cursor-pointer gap-2 px-0 py-0">
+            <input type="checkbox" class="checkbox checkbox-sm checkbox-primary" checked />
+            <span>AI 周报</span>
+          </label>
+        </div>
+        <p class="text-xs text-base-content/60">
+          演示表单：上线前请接入邮件服务（如 Buttondown / Mailchimp）。
+        </p>
+      </form>
+    </div>
+  </div>
+</section>

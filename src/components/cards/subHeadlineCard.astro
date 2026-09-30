@@ -38,6 +38,16 @@ const category = categoriesHandler.oneCategory(article.data.category.id);
         >
           {article.data.description}
         </p>
+        {
+          article.data.editorNote && (
+            <p class="text-sm text-base-content/60 italic mt-1 line-clamp-2">
+              <span class="not-italic font-semibold text-primary dark:text-secondary">
+                编辑短评：
+              </span>
+              {article.data.editorNote}
+            </p>
+          )
+        }
       </div>
     </div>
     <div class="flex items-center text-xs text-base-content/80 mt-1 lg:mt-auto">

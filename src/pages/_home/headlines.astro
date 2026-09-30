@@ -12,6 +12,18 @@ const subHeadlinesArticles = articlesHandler.subHeadlines();
   data-pagefind-ignore="all"
 >
   <div class="col-span-1 md:col-span-6">
+    <div class="flex items-center gap-2 mb-3">
+      <h2 class="text-xl font-bold">今日必读</h2>
+      <span
+        class="badge badge-primary badge-sm text-primary-content font-sans"
+        >编辑精选</span
+      >
+      <a
+        href="/must-read"
+        class="ml-auto text-sm text-base-content/80 hover:text-primary transition-all"
+        >查看全部</a
+      >
+    </div>
     <MainHeadline article={mainHeadlineArticle} />
   </div>
   <div class="col-span-1 md:col-span-4">
