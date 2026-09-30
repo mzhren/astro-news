@@ -27,6 +27,10 @@ export const articlesKs = collection({
       label: "Editor note (编辑短评/观点)",
       validation: { length: { max: 200 } },
     }),
+    covert_alt: fields.text({
+      label: "Cover alt (封面替代文本)",
+      description: "封面图片的 alt 描述，留空时回退为文章标题",
+    }),
     description: fields.text({
       label: "Description",
       validation: { isRequired: true, length: { max: 160 } },

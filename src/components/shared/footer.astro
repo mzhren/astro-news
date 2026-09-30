@@ -1,6 +1,5 @@
 ---
 import { NAVIGATION_LINKS, SITE, SOCIAL_LINKS, OTHER_LINKS } from "@/lib/config";
-import Hashtag from "@/assets/svgs/hashtag.astro";
 import Icon from "../bases/icon.astro";
 ---
 
@@ -10,7 +9,14 @@ import Icon from "../bases/icon.astro";
   <div class="container">
     <div class="flex flex-col gap-4">
       <aside class="flex items-center gap-2">
-        <Hashtag />
+        <img
+          src="/logo.png"
+          alt="{SITE.title} logo"
+          width="36"
+          height="36"
+          class="w-9 h-9 rounded-lg"
+          loading="lazy"
+        />
         <p>
           <strong class="text-lg">AI 深度观察</strong>
           <br />
