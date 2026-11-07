@@ -1,0 +1,26 @@
+---
+isDraft: false
+isMainHeadline: false
+isSubHeadline: true
+isDeepWatch: false
+editorNote: coding 圈"harness 决定上限"的经验被直接搬到具身智能——通用 coding agent + 好的工具层，可能比专用 VLA 更便宜更好用，为"本体厂商开放接口找大脑"路线提供强佐证。
+cover: '@assets/images/articles/understanding-java-script-closures-cover.avif'
+covert_alt: uni-robot-agent 机器人运行时研究概念图
+title: 清华×Berkeley 把 Codex/Claude Code 变成机器人运行时，成本降至 1/20
+description: 开源模型借标准工具集（看/移/抓）控制真机；Qwen3.8-Flash-Next 在 RoboDojo 从 1.90 升至 31.39，单任务成本 $1.09 vs $21.29。
+category: tech-frontier
+publishedTime: 2026-11-07T02:20:00.000Z
+authors:
+  - manong-zhenjing
+---
+清华与 Berkeley 的 uni-robot-agent 项目，用 Codex 与 Claude Code 作为 runtime，让开源模型通过标准工具集（看/移/抓）控制机器人；相机帧绑定实时臂状态，模型可以"边动边想"。
+
+## 结果：分数翻十几倍，成本降至 1/20
+
+- Qwen3.8-Flash-Next 在 RoboDojo 基准从 **1.90 → 31.39**，超过旧设置下 GPT-6 Astra 的 28.97；
+- 19 个真机双臂任务拿到 53.50 分，超过调优过的专用机器人模型；
+- **单任务成本 $1.09，对比 $21.29**。
+
+## 为什么值得关注
+
+这是本期最有趣的跨界：coding 圈"harness 决定上限"的经验（同一模型换个 harness，分数翻十几倍）被直接搬到具身智能。对"本体厂商开放接口找大脑"（宇树全球找大脑、智元外挂 Astra）的路线是一个强佐证——**通用 coding agent + 好的工具层，可能比专用 VLA 更便宜、更好用**。

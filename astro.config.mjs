@@ -14,6 +14,9 @@ const { RUN_KEYSTATIC } = loadEnv(import.meta.env.MODE, process.cwd(), "");
 
 const integrations = [mdx(), sitemap(), pagefind()];
 
+// Keystatic 仅在本地开发时通过环境变量启用（见 package.json 的 dev 脚本）。
+// 它的 API 路由需要 server 运行时——若在 astro build 时也启用会报 NoAdapterInstalled，
+// 因此不要把 RUN_KEYSTATIC=true 写进 .env（build 时 loadEnv 也会读取它）。
 if (RUN_KEYSTATIC === "true") {
   integrations.push(react());
   integrations.push(keystatic());

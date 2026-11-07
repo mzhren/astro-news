@@ -114,7 +114,23 @@ authors:
 
 ### 3. 快讯流（首页顶部滚动条 + 首页右侧面板 + `/flash` 页）
 
-在 `src/content/flash/<slug>/index.mdx` 创建（每个目录一条）：
+**目录按日期分层**：`src/content/flash/年/月/日/<slug>/index.mdx`（如 `src/content/flash/2026/11/07/xxx/index.mdx`），方便按日检索与按月归档。
+
+**方式 A：脚手架脚本（推荐，最快）**
+
+```bash
+npm run flash "快讯标题，一句话"
+npm run flash "快讯标题" -- --source 路透社 --url https://原文链接
+npm run flash "标题" -- --date 2026-11-06   # 补发到指定日期（默认今天，北京时间）
+```
+
+脚本会自动创建当日日期目录并生成 frontmatter 骨架（发布时间 = 当前时刻）。
+
+**方式 B：Keystatic 后台**
+
+`/keystatic` → Flash (快讯) → Add。**新建时 Slug 需手敲日期路径**（如 `2026/11/07/nvidia-ships`），已有条目可直接编辑。
+
+**方式 C：手动建文件**
 
 ```mdx
 ---
@@ -123,12 +139,11 @@ publishedTime: 2026-09-30T00:00:00.000Z
 source: '来源名，如 路透社 / TechCrunch'
 url: 'https://原文链接（可选）'
 ---
-（正文可留空）
 ```
 
+- `publishedTime` 为 UTC（北京时间 12:00 = `T04:00:00.000Z`）；目录日期按北京时间归档。
 - 首页顶部滚动条和右侧快讯流面板取**最新 10 条**；`/flash` 页展示全部，按北京时间日期分组。
-- 有 `url` 时点击跳原文（新窗口），无 `url` 时跳 `/flash` 页。
-- 建议每天清掉过旧条目或定期归档，保持「实时」感。
+- 建议定期把超过 1–2 个月的旧日期目录归档或删除，保持「实时」感。
 
 ### 4. 技术前沿（论文 / 开源 / 模型）
 
@@ -196,9 +211,10 @@ push 到 master 后 Cloudflare Pages 自动构建部署，约 1–2 分钟生效
 | 症状 | 原因 | 解决 |
 |---|---|---|
 | 构建报 `ImageNotFound: Could not find requested image` | 封面图没提交进 git（已发生 2 次） | `git status` 确认图片是否 untracked，补提交 |
+| 构建报 `NoAdapterInstalled` | `.env` 里写了 `RUN_KEYSTATIC=true`（build 也会读取它，Keystatic 的 API 路由需要 server 运行时） | 保持 `.env` 不含该变量；dev 脚本已内置，无需手动设置 |
 | 文章不显示 | `publishedTime` 是未来时间，或 `isDraft: true` | 改为过去时间 / 改 false |
 | 文章不显示在「今日必读」 | 未标记 isMainHeadline / isSubHeadline | 加标记 |
-| Keystatic 打不开或 404 | dev server 未带 `RUN_KEYSTATIC=true` 启动 | 用第六节命令重启 |
+| Keystatic 打不开或 404 | dev server 未带 `RUN_KEYSTATIC=true` 启动 | 用 `npm run dev`（脚本已内置）重启 |
 | Keystatic 编辑器报 `Key on object value "xxx" is not allowed` | frontmatter 有 schema 之外的键 | 在 `src/lib/keystatic/articlesKs.ts` 补字段，或删掉该键 |
 | 内联图 404 | 图片没提交，或路径不是 `/images/<slug>/...` | 核对 public 目录与提交状态 |
 | 深度观察/必读数量不变 | 板块取的是「最新 N 篇」，旧文标记了也不会顶上来 | 正常行为，按时间排序 |
