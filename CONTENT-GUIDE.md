@@ -42,6 +42,15 @@
 
 手动创建/修改 mdx 文件 → 本地 `npm run dev` 预览 → `git add`（**图片和内容同一批提交！**）→ commit → push → Cloudflare 自动构建部署。
 
+**日报批量入库工具**（新日报文件写好后一条命令完成转换，自动生成 frontmatter、按日期轮换封面、已存在的日期自动跳过）：
+
+```bash
+node scripts/convert-daily.mjs "/path/to/AI日报-2026-11-09.md"   # 单期
+node scripts/convert-daily.mjs "/path/to/ai日志目录"              # 批量
+```
+
+> 工具生成的 `publishedTime` = 当前时刻（保证「已发布」状态）；如需固定早间时间，手动改 frontmatter 即可。
+
 ---
 
 ## 三、文章通用格式（frontmatter 模板）

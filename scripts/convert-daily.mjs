@@ -95,7 +95,8 @@ for (const file of targets) {
 
   const issueNo = (titleLine.match(/（(.+?)）/) || [])[1] ?? "";
   const cover = covers[Math.abs(date.split("-").join("")) % covers.length];
-  const publishedTime = `${date}T00:00:00.000Z`;
+  // 发布时间取当前时刻（确保为过去时间，否则文章会被「只显示已发布」规则过滤）
+  const publishedTime = new Date(Date.now() - 30 * 60 * 1000).toISOString();
 
   const metaSrc = theme || intro || title;
   const desc = metaSrc.slice(0, 157) + (metaSrc.length > 157 ? "…" : "");
