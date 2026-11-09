@@ -8,13 +8,15 @@ if (!entry) {
   return Astro.redirect("/404");
 }
 
+type BoardCell = string | number | { text: string; href: string };
+
 type Board = {
   id: string;
   emoji: string;
   title: string;
   description: string;
   columns: string[];
-  rows: (string | number)[][];
+  rows: BoardCell[][];
 };
 
 const boards: Board[] = [
@@ -39,17 +41,19 @@ const boards: Board[] = [
     id: "products",
     emoji: "🚀",
     title: "产品榜",
-    description: "AI 应用热度与口碑（示例数据）",
-    columns: ["排名", "产品", "赛道", "月活", "环比", "评分"],
+    description: "Product Hunt 每日榜 · 2026-11-09（初榜 · 采集中）",
+    columns: ["排名", "产品", "一句话介绍", "分类", "票数"],
     rows: [
-      [1, "ChatGPT", "助手", "8.2 亿", "▲ 6%", 4.8],
-      [2, "Gemini", "助手", "6.5 亿", "▲ 11%", 4.7],
-      [3, "Cursor", "编程", "380 万", "▲ 18%", 4.9],
-      [4, "Claude Code", "编程", "260 万", "▲ 22%", 4.8],
-      [5, "Perplexity", "搜索", "1.2 亿", "▲ 9%", 4.6],
-      [6, "Midjourney", "图像", "2100 万", "▲ 4%", 4.5],
-      [7, "NotebookLM", "学习", "1800 万", "▲ 15%", 4.7],
-      [8, "Notion AI", "办公", "1500 万", "▲ 7%", 4.4],
+      [1, { text: "Product Hunt MCP", href: "https://www.producthunt.com/products/producthunt" }, "在你常用的 AI 助手里接入可信的 Product Hunt 社区数据", "效率 / 开发工具 / AI", 301],
+      [2, { text: "Dageno AI 2.0", href: "https://www.producthunt.com/products/agent-powered-geo-by-dageno" }, "看看 AI 为什么推荐你的竞品而不是你", "营销 / SEO / 搜索", 286],
+      [3, { text: "Databox CLI", href: "https://www.producthunt.com/products/databox" }, "终端里的智能体分析平台", "效率 / SaaS / 开发工具", 261],
+      [4, { text: "Arcjet AI security models", href: "https://www.producthunt.com/products/arcjet" }, "为 coding agent 定制的安全模型家族", "开发工具 / AI / 安全", 199],
+      [5, { text: "ProtoMap", href: "https://www.producthunt.com/products/hounddog-ai-static-code-scanner-2" }, "别再浪费 AI token 重复发现依赖", "开发工具 / AI / GitHub", 152],
+      [6, { text: "Higgsfield Miracle", href: "https://www.producthunt.com/products/higgsfield" }, "只改视频局部，其余画面保持不变", "设计工具 / AI / 视频", 122],
+      [7, { text: "MCP1", href: "https://www.producthunt.com/products/appwrite" }, "一个 URL 汇聚所有 MCP 服务器", "API / 开发工具 / AI", 119],
+      [8, { text: "GitHub New PR Overview", href: "https://www.producthunt.com/products/github" }, "滚动之前先看清 PR 被什么阻塞", "开发工具 / GitHub", 119],
+      [9, { text: "Voyager ✴️", href: "https://www.producthunt.com/products/vygr" }, "浏览工作上下文的智能体文件管理器", "效率 / 开发工具 / AI", 102],
+      [10, { text: "Pawse.ai", href: "https://www.producthunt.com/products/pawse-ai" }, "为狗而非人设计的声效工程", "Android / iOS / 宠物", 101],
     ],
   },
 ];
@@ -104,6 +108,15 @@ const boards: Board[] = [
                           <span class="inline-flex w-6 h-6 items-center justify-center rounded-full bg-primary/10 text-primary dark:text-secondary">
                             {cell}
                           </span>
+                        ) : typeof cell === "object" && cell !== null ? (
+                          <a
+                            href={cell.href}
+                            target="_blank"
+                            rel="noopener"
+                            class="link link-hover link-primary"
+                          >
+                            {cell.text}
+                          </a>
                         ) : (
                           cell
                         )}
@@ -120,6 +133,6 @@ const boards: Board[] = [
   </div>
 
   <p class="text-xs text-base-content/50 pb-4">
-    以上为演示数据，正式上线后可由编辑后台维护或接入自动化评测流水线。
+    产品榜数据来源：Product Hunt 每日榜 · 2026-11-09（初榜 · 采集中），经 AIGCNEWS（aigcnews.cn）聚合，抓取于 2026-11-10，票数持续更新；模型榜为演示数据。
   </p>
 </ListLayout>
