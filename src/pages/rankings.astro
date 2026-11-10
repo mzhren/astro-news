@@ -24,17 +24,24 @@ const boards: Board[] = [
     id: "models",
     emoji: "🧠",
     title: "模型榜",
-    description: "主流大模型综合能力横评（示例数据）",
-    columns: ["排名", "模型", "厂商", "综合分", "环比", "开源"],
+    description: "OpenCode 真实使用留存榜 · 截至 2026-11-09",
+    columns: ["排名", "模型", "留存率", "用户规模"],
     rows: [
-      [1, "GPT-5.2", "OpenAI", 94.2, "▲ 1.3", "否"],
-      [2, "Claude 4.5 Opus", "Anthropic", 93.5, "▲ 2.1", "否"],
-      [3, "Gemini 3 Ultra", "Google", 92.8, "▲ 0.8", "否"],
-      [4, "DeepSeek-V4", "DeepSeek", 92.1, "▲ 3.4", "是"],
-      [5, "Qwen 4 Max", "阿里", 91.4, "▲ 1.9", "是"],
-      [6, "Kimi K2", "月之暗面", 90.2, "▲ 2.7", "是"],
-      [7, "GLM-5", "智谱", 89.6, "▲ 1.1", "是"],
-      [8, "Llama 4 405B", "Meta", 88.9, "▼ 0.4", "是"],
+      [1, "mimo-v2.6-flash", "80.2%", "9.6K"],
+      [2, "deepseek-v4.1-flash", "75.6%", "637K"],
+      [3, "beam-1.0-501b-a23b", "74.5%", "7.9K"],
+      [4, "minimax-m3.1-flash", "72.2%", "15K"],
+      [5, "muse-spark-1.3-contributor", "69.2%", "55K"],
+      [6, "mimo-v2.6-pro", "68.2%", "8.1K"],
+      [7, "iceman-contributor", "67.8%", "423"],
+      [8, "gpt-6-luna", "66.7%", "17K"],
+      [9, "claude-haiku-5-5", "66.1%", "7.7K"],
+      [10, "gemini-4-argon", "64.9%", "1.9K"],
+      [11, "hy3", "64.1%", "1.1K"],
+      [12, "minimax-m2.5", "63.3%", "109"],
+      [13, "glm-5.3-flash", "62.7%", "68K"],
+      [14, "qwen3.8-flash", "61.6%", "9.2K"],
+      [15, "qwen3.7-plus", "61.3%", "5.6K"],
     ],
   },
   {
@@ -133,6 +140,6 @@ const boards: Board[] = [
   </div>
 
   <p class="text-xs text-base-content/50 pb-4">
-    产品榜数据来源：Product Hunt 每日榜 · 2026-11-09（初榜 · 采集中），经 AIGCNEWS（aigcnews.cn）聚合，抓取于 2026-11-10，票数持续更新；模型榜为演示数据。
+    模型榜数据来源：OpenCode Data（opencode.ai/data），留存率 = 上周使用某模型的用户本周继续使用的占比，更新于 2026-11-10；产品榜数据来源：Product Hunt 每日榜 · 2026-11-09（初榜 · 采集中），经 AIGCNEWS（aigcnews.cn）聚合。
   </p>
 </ListLayout>
