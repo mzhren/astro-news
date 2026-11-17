@@ -87,7 +87,7 @@ for (const file of targets) {
 
   // MDX 风险字符粗检：裸 <字母、花括号
   const risky = [];
-  if (/<[a-zA-Z/!?]/.test(body)) risky.push("含疑似标签的 <");
+  if (/<[a-zA-Z/!?0-9]/.test(body)) risky.push("含疑似标签的 <");
   if (/[{}]/.test(body)) risky.push("含花括号 {}");
   if (risky.length) {
     problems.push(`${path.basename(file)}：${risky.join("、")}，请人工检查`);
