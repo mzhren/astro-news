@@ -74,10 +74,12 @@ for (const file of targets) {
     if (lines[i].startsWith(">")) introLines.push(lines[i].replace(/^>\s?/, ""));
   }
   const intro = introLines.join(" ").trim();
-  const themeMatch = raw.match(/\*\*主题：(.+?)\*\*/);
+  const themeMatch = raw.match(/\*\*主题：(.+?)\*\*/) || raw.match(/\*\*本期主线\*\*：\*\*(.+?)\*\*/);
   const theme = themeMatch ? themeMatch[1].trim() : "";
   const mainIdx = raw.indexOf("## 主条目");
-  if (!titleLine || (mainIdx === -1 && !intro)) {
+  // 第三格式（2026-11-20 起）：无「主条目」节，章节为「## 一、二、三」+「## 附注」
+  const cnSection = /^##\s+[一二三四五六七八九十]/m.test(raw);
+  if (!titleLine || (mainIdx === -1 && !intro && !cnSection)) {
     problems.push(`${path.basename(file)}：缺少标题行/导语/「## 主条目」，请人工检查`);
     continue;
   }
